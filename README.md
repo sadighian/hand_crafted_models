@@ -10,9 +10,10 @@ Simple linear model implementations from scratch.
 
 ## 1. Overview
 
-This repository is intended for educational purposes, where 
-popular predictive linear models (i.e., linear and logistic regressions) 
-are coded from scratch to demonstrate the mathematics behind the models.
+The repo consists of popular predictive linear models 
+(i.e., linear and logistic regressions) and is 
+intended for educational purposes to demonstrate 
+the mathematics behind the models.
 
 
 ## 2. Project Structure
