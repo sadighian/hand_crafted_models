@@ -7,8 +7,8 @@ def log_loss(
         y_hat: np.ndarray,
         y: np.ndarray
 ) -> float:
-    is_one = y * np.log(y_hat)  # I.e., loss when y-hat is 1
-    is_zero = (1.0 - y) * np.log(1.0 - y_hat)  # I.e., loss when y-hat is 0
+    is_one = y * np.log(y_hat)  # I.e., loss when Y is 1
+    is_zero = (1.0 - y) * np.log(1.0 - y_hat)  # I.e., loss when Y is 0
     loss = -(is_one + is_zero).mean()
     return loss
 
