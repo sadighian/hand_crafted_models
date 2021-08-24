@@ -53,7 +53,7 @@ python3 tests/tests.py
 
 ## 4. Citing the Project
 ```
-@misc{Recommendation-Gym,
+@misc{Hand Crafted Models,
     author = {Jonathan Sadighian},
     title = {Hand Crafted Models: Simple linear model implementations},
     year = {2021},
