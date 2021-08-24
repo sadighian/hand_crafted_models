@@ -1,0 +1,9 @@
+venv
+*.csv
+.idea
+build
+dist
+.pytest_cache
+*.egg*
+.ipynb_checkpoints
+*__pycache__*
