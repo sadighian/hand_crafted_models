@@ -8,6 +8,12 @@ from sklearn.datasets import make_regression, make_classification
 def ensure_dims(
         x: np.ndarray
 ) -> np.ndarray:
+    """
+    Make sure there are two dims (row x cols) for matrix multiplication.
+    
+    :param x: Vector or Matrix
+    :return: Matrix
+    """
     if x.ndim == 1:
         x = np.expand_dims(x, -1)
     return x
@@ -18,6 +24,14 @@ def forward_pass(
         weights: np.ndarray,
         bias: np.ndarray
 ) -> np.ndarray:
+    """
+    Make a prediction using a given parameters
+    
+    :param x: Data
+    :param weights: Feature parameters
+    :param bias: Bias parameter
+    :return: Prediction
+    """
     assert x.ndim == weights.ndim == bias.ndim and x.ndim > 1, \
         f'All dims must match!!! x: {x.ndim}, weights: {weights.ndim}, bias: {bias.ndim}'
     assert x.shape[1] == weights.shape[1], \
@@ -28,15 +42,26 @@ def forward_pass(
 def convert_probability_to_boolean(
         y_hat: np.ndarray
 ) -> np.ndarray:
+    """
+    Convert prediction probabilities to either a '1' or '0'.
+    
+    :param y_hat: Prediction probabilities
+    :return: Transformed predictions
+    """
     predictions = np.round(y_hat).astype(np.int)  # Converts to either: '0' or '1'
     return predictions
 
 
 def plot_regression_results(
-        x: np.ndarray,
         y: np.ndarray,
         y_hat: np.ndarray
 ) -> None:
+    """
+    Plot linear regression predictions.
+    
+    :param y: Label data
+    :param y_hat: Prediction data
+    """
     y_hat = ensure_dims(y_hat)
     error = np.mean((y - y_hat) ** 2)
     plt.figure(figsize=(12, 6))
@@ -52,6 +77,13 @@ def plot_classification_results(
         y: np.ndarray,
         y_hat: np.ndarray
 ) -> None:
+    """
+    Plot logistic regression predictions.
+    
+    :param x: Input data
+    :param y: Label data
+    :param y_hat: Prediction data
+    """
     if x.shape[1] != 2:
         print(f'Input data must have only two features, not {x.shape[1]}')
         return
@@ -108,6 +140,12 @@ def plot_classification_results(
 def gen_regression_data(
         n_features: int = 1
 ) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Create dummy regression data.
+    
+    :param n_features: Number of features
+    :return: input data, labels
+    """
     x, y = make_regression(
         n_samples=100,
         n_features=n_features,
@@ -120,6 +158,12 @@ def gen_regression_data(
 def gen_classification_data(
         n_features: int = 2
 ) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Create dummy classification data.
+    
+    :param n_features: Number of features
+    :return: input data, labels
+    """
     x, y = make_classification(
         n_samples=100,
         n_features=n_features,

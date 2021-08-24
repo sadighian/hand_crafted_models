@@ -19,6 +19,18 @@ def gradient_descent(
         max_grad: float = 10.0,
         max_loops: int = 10000
 ) -> WeightsAndBias:
+    """
+    Fit parameters using gradient descent.
+    
+    :param x: Input data [Batch, Features]
+    :param y: Label data [Batch, 1]
+    :param fn: Gradient descent gradient calculation function
+    :param lr: Learning rate (i.e., optimizer step size)
+    :param tol: Tolerance for early-stopping
+    :param max_grad: (Optional) Max size of gradient
+    :param max_loops: Maximum number of steps to take
+    :return: weight gradients, bias gradient
+    """
     x = ensure_dims(x)
     y = ensure_dims(y)
     
@@ -65,6 +77,14 @@ def closed_form_linear_algebra(
         y: np.ndarray,
         add_bias: bool = True
 ) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Fit parameters using matrices and linear algebra.
+    
+    :param x: Input data [Batch, Features]
+    :param y: Label data [Batch, 1]
+    :param add_bias: If 'true', append a column of ones to use for the bias
+    :return: weight gradients, bias gradient
+    """
     if add_bias:
         x_1 = np.hstack((x, np.ones(shape=x.shape, dtype=x.dtype)))
     else:

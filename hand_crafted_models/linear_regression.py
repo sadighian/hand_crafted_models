@@ -14,6 +14,16 @@ def _step(
         bias: np.ndarray,
         one: np.ndarray
 ) -> GradientStep:
+    """
+    Mean-squared-error: Calculate gradients for a given step.
+    
+    :param x: Input data [Batch, Features]
+    :param y: Label data [Batch, 1]
+    :param weights: Feature parameters [1, Features]
+    :param bias: Bias parameter [1, 1]
+    :param one: (Ignore) Vector of ones
+    :return: step loss, weight gradients, bias gradient
+    """
     # Get predictions
     y_hat = forward_pass(x=x, weights=weights, bias=bias)
     # Calculate total loss value for current parameter values (e.g., MSE cost fn)
@@ -36,6 +46,17 @@ def get_beta_sgd(
         max_grad: float = 10.0,
         max_loops: int = 10000
 ) -> WeightsAndBias:
+    """
+    Fit parameters using gradient descent.
+    
+    :param x: Input data [Batch, Features]
+    :param y: Label data [Batch, 1]
+    :param lr: Learning rate (i.e., optimizer step size)
+    :param tol: Tolerance for early-stopping
+    :param max_grad: (Optional) Max size of gradient
+    :param max_loops: Maximum number of steps to take
+    :return: weight gradients, bias gradient
+    """
     return gradient_descent(
         x=x,
         y=y,
@@ -52,6 +73,14 @@ def get_beta_linalg(
         y: np.ndarray,
         add_bias: bool = True
 ) -> WeightsAndBias:
+    """
+    Fit parameters using matrices and linear algebra.
+    
+    :param x: Input data [Batch, Features]
+    :param y: Label data [Batch, 1]
+    :param add_bias: If 'true', append a column of ones to use for the bias
+    :return: weight gradients, bias gradient
+    """
     return closed_form_linear_algebra(
         x=x,
         y=y,

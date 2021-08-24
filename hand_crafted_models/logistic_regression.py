@@ -5,8 +5,6 @@ from hand_crafted_models.loss_functions import log_loss
 from hand_crafted_models.optimization import gradient_descent, GradientStep, WeightsAndBias
 from hand_crafted_models.utils import forward_pass
 
-EPS = np.finfo(np.float32).eps
-
 
 def _step(
         x: np.ndarray,
@@ -15,6 +13,16 @@ def _step(
         bias: np.ndarray,
         one: np.ndarray
 ) -> GradientStep:
+    """
+    Log-loss: Calculate gradients for a given step.
+    
+    :param x: Input data [Batch, Features]
+    :param y: Label data [Batch, 1]
+    :param weights: Feature parameters [1, Features]
+    :param bias: Bias parameter [1, 1]
+    :param one: (Ignore) Vector of ones
+    :return: step loss, weight gradients, bias gradient
+    """
     # Make prediction
     y_hat = sigmoid(logits=forward_pass(x=x, weights=weights, bias=bias))
     # Derive total loss value for current parameter values (i.e., Binary Cross-Entropy loss cost fn)
@@ -36,6 +44,17 @@ def get_beta_sgd(
         max_grad: float = 10.0,
         max_loops: int = 10000
 ) -> WeightsAndBias:
+    """
+    Fit parameters using gradient descent.
+    
+    :param x: Input data [Batch, Features]
+    :param y: Label data [Batch, 1]
+    :param lr: Learning rate (i.e., optimizer step size)
+    :param tol: Tolerance for early-stopping
+    :param max_grad: (Optional) Max size of gradient
+    :param max_loops: Maximum number of steps to take
+    :return: weight gradients, bias gradient
+    """
     return gradient_descent(
         x=x,
         y=y,
