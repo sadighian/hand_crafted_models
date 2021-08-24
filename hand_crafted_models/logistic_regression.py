@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import numpy as np
 
 from hand_crafted_models.activations import sigmoid
@@ -17,7 +15,6 @@ def _step(
         bias: np.ndarray,
         one: np.ndarray
 ) -> GradientStep:
-    # Source: http://cs230.stanford.edu/fall2018/section_files/section3_soln.pdf
     # Make prediction
     y_hat = sigmoid(logits=forward_pass(x=x, weights=weights, bias=bias))
     # Derive total loss value for current parameter values (i.e., Binary Cross-Entropy loss cost fn)
@@ -39,5 +36,12 @@ def get_beta_sgd(
         max_grad: float = 10.0,
         max_loops: int = 10000
 ) -> WeightsAndBias:
-    return gradient_descent(x=x, y=y, fn=_step, lr=lr, tol=tol, max_grad=max_grad,
-                            max_loops=max_loops)
+    return gradient_descent(
+        x=x,
+        y=y,
+        fn=_step,
+        lr=lr,
+        tol=tol,
+        max_grad=max_grad,
+        max_loops=max_loops
+    )
