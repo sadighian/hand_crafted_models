@@ -31,34 +31,33 @@ def gradient_descent(
     :param max_loops: Maximum number of steps to take
     :return: weight gradients, bias gradient
     """
+    # Make sure vectors are converted to matrices
     x = ensure_dims(x)
     y = ensure_dims(y)
-    
+    # Dataset dimensions
     num_of_records, num_of_features = x.shape
-    
-    weights = np.ones(shape=(1, num_of_features,), dtype=x.dtype)  # Feature params to learn
-    bias = np.zeros(shape=(1, 1,), dtype=x.dtype)  # Bias parameter
-    one = np.ones(shape=(num_of_records, 1,), dtype=x.dtype)  # Ones vector for summing bias
-    
-    loss_cache: Optional[float] = None  # Used for early stopping (below)
-    
+    # Feature params to learn
+    weights = np.ones(shape=(1, num_of_features,), dtype=x.dtype)
+    # Bias parameter to learn
+    bias = np.zeros(shape=(1, 1,), dtype=x.dtype)
+    # Ones vector for summing bias
+    one = np.ones(shape=(num_of_records, 1,), dtype=x.dtype)
+    # Loss cache is for early stopping (see below)
+    loss_cache: Optional[float] = None
+    # Perform gradient descent 'n' times
     for i in range(max_loops):
         # Calculate gradients
         loss, d_w, d_b = fn(x, y, weights, bias, one)
-        
         # Adjust gradients by the learning rate
         d_w *= lr
         d_b *= lr
-        
         # (Optional) Clip the gradient values by a threshold
         if isinstance(max_grad, (int, float)):
             d_w = np.clip(d_w, -max_grad, max_grad)
             d_b = np.clip(d_b, -max_grad, max_grad)
-        
         # Update parameters with gradient values
         weights += d_w
         bias += d_b
-        
         # Check for early exit from training loop
         if loss_cache is None:
             loss_cache = loss
@@ -68,7 +67,6 @@ def gradient_descent(
             if loss_change < tol:
                 print(f'Solved on Step #{i:,} | loss: {loss:,.3f}')
                 break
-    
     return weights, bias
 
 

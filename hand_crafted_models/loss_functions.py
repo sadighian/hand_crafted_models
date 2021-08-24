@@ -14,8 +14,8 @@ def log_loss(
     :param y: Label value (i.e., ground-truth)
     :return: loss value
     """
-    is_one = y * np.log(y_hat)  # I.e., loss when Y is 1
-    is_zero = (1.0 - y) * np.log(1.0 - y_hat)  # I.e., loss when Y is 0
+    is_one = y * np.log(y_hat)
+    is_zero = (1.0 - y) * np.log(1.0 - y_hat)
     loss = -(is_one + is_zero).mean()
     return loss
 

@@ -10,7 +10,7 @@ def sigmoid(
     :param logits: Output from dot-product
     :return: Prediction probability
     """
-    return 1 / (1 + np.exp(-logits))
+    return 1. / (1. + np.exp(-logits))
 
 
 def softmax(

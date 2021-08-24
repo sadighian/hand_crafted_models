@@ -48,7 +48,7 @@ def convert_probability_to_boolean(
     :param y_hat: Prediction probabilities
     :return: Transformed predictions
     """
-    predictions = np.round(y_hat).astype(np.int)  # Converts to either: '0' or '1'
+    predictions = np.round(y_hat).astype(np.int)
     return predictions
 
 
