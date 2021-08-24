@@ -1,5 +1,6 @@
 # Hand Crafted Models
-Popular predictive models and optimizers implemented in numpy.
+Simple linear model implementations from scratch.
+
 **Table of contents**
 1. Overview
 2. Project Structure
