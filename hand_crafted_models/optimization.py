@@ -35,13 +35,13 @@ def gradient_descent(
     x = ensure_dims(x)
     y = ensure_dims(y)
     # Dataset dimensions
-    num_of_records, num_of_features = x.shape
+    batch_size, num_of_features = x.shape
     # Feature params to learn
     weights = np.ones(shape=(1, num_of_features,), dtype=x.dtype)
     # Bias parameter to learn
     bias = np.zeros(shape=(1, 1,), dtype=x.dtype)
     # Ones vector for summing bias
-    one = np.ones(shape=(num_of_records, 1,), dtype=x.dtype)
+    one = np.ones(shape=(batch_size, 1,), dtype=x.dtype)
     # Loss cache is for early stopping (see below)
     loss_cache: Optional[float] = None
     # Perform gradient descent 'n' times

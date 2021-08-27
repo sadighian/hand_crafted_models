@@ -19,6 +19,7 @@ class TestLinearModels(unittest.TestCase):
         plot_regression_results(y=y, y_hat=predictions)
         print(f'weights: {weights}')
         print(f'bias: {bias}')
+        print(f'loss: {loss:,.4f}')
         self.assertGreater(a=loss, b=0, msg=f'{loss} must be greater than {0}')
     
     def test_ols_linear_algebra(self):
@@ -32,17 +33,19 @@ class TestLinearModels(unittest.TestCase):
         plot_regression_results(y=y, y_hat=predictions)
         print(f'weights: {weights}')
         print(f'bias: {bias}')
+        print(f'loss: {loss:,.4f}')
         self.assertGreater(a=loss, b=0, msg=f'{loss} must be greater than {0}')
     
     def test_logistic_regression_gradient_descent(self):
         from hand_crafted_models.logistic_regression import get_beta_sgd, sigmoid
         from hand_crafted_models.loss_functions import log_loss
         
-        x, y = gen_classification_data(n_features=2)
+        x, y = gen_classification_data(n_features=2, seed=12345)
         weights, bias = get_beta_sgd(x=x, y=y)
         predictions = sigmoid(logits=forward_pass(x=x, weights=weights, bias=bias))
         loss = log_loss(y_hat=predictions, y=y)
         plot_classification_results(x=x, y=y, y_hat=predictions)
         print(f'weights: {weights}')
         print(f'bias: {bias}')
+        print(f'loss: {loss:,.4f}')
         self.assertGreater(a=loss, b=0, msg=f'{loss} must be greater than {0}')

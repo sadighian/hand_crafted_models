@@ -48,7 +48,7 @@ def convert_probability_to_boolean(
     :param y_hat: Prediction probabilities
     :return: Transformed predictions
     """
-    predictions = np.round(y_hat).astype(np.int)
+    predictions = np.round(y_hat).astype(int)
     return predictions
 
 
@@ -125,7 +125,7 @@ def plot_classification_results(
             marker='.'
         )
     wrong_predictions = set(range(num_of_records)).difference(set(pred_list))
-    wrong_predictions = np.asarray(list(wrong_predictions), dtype=np.int)
+    wrong_predictions = np.asarray(list(wrong_predictions), dtype=int)
     plt.scatter(x[wrong_predictions, 0], x[wrong_predictions, 1],
                 label=f'Wrong Predictions',
                 alpha=0.5,
@@ -138,30 +138,34 @@ def plot_classification_results(
 
 
 def gen_regression_data(
-        n_features: int = 1
+        n_features: int = 1,
+        seed: int = 109
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
     Create dummy regression data.
     
     :param n_features: Number of features
+    :param seed: Number for Random State
     :return: input data, labels
     """
     x, y = make_regression(
         n_samples=100,
         n_features=n_features,
         n_informative=n_features,
-        random_state=9999
+        random_state=seed
     )
     return x, y
 
 
 def gen_classification_data(
-        n_features: int = 2
+        n_features: int = 2,
+        seed: int = 109
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
     Create dummy classification data.
     
     :param n_features: Number of features
+    :param seed: Number for Random State
     :return: input data, labels
     """
     x, y = make_classification(
@@ -170,6 +174,6 @@ def gen_classification_data(
         n_informative=n_features,
         n_redundant=0,
         n_repeated=0,
-        random_state=9999
+        random_state=seed
     )
     return x, y
