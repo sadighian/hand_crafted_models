@@ -1,8 +1,12 @@
+from typing import Optional
+
 import numpy as np
 
-from hand_crafted_models.activations import sigmoid
-from hand_crafted_models.loss_functions import log_loss
-from hand_crafted_models.optimization import gradient_descent, GradientStep, WeightsAndBias
+from hand_crafted_models.activation import sigmoid
+from hand_crafted_models.loss_function import log_loss
+from hand_crafted_models.optimization import (
+    gradient_descent, GradientStep, WeightsAndBias,
+)
 from hand_crafted_models.utils import forward_pass
 
 
@@ -25,7 +29,8 @@ def _step(
     """
     # Make prediction
     y_hat = sigmoid(logits=forward_pass(x=x, weights=weights, bias=bias))
-    # Derive total loss value for current parameter values (i.e., Binary Cross-Entropy loss cost fn)
+    # Derive total loss value for current parameter values
+    #   (i.e., Binary Cross-Entropy loss cost fn)
     loss = log_loss(y_hat=y_hat, y=y)
     # Perform back-propagation to parameters
     d_y = (y - y_hat)  # [B, 1]
@@ -42,7 +47,9 @@ def get_beta_sgd(
         lr: float = 0.001,
         tol: float = 1e-6,
         max_grad: float = 10.0,
-        max_loops: int = 10000
+        max_loops: int = 10000,
+        reg_lambda: float = 1e-4,
+        regularization: Optional[str] = None
 ) -> WeightsAndBias:
     """
     Fit parameters using gradient descent.
@@ -53,6 +60,8 @@ def get_beta_sgd(
     :param tol: Tolerance for early-stopping
     :param max_grad: (Optional) Max size of gradient
     :param max_loops: Maximum number of steps to take
+    :param reg_lambda: Lambda scalar for regularization (if it's being used)
+    :param regularization: (Optional) 'l1' or 'l2' norm to prevent overfitting
     :return: weight gradients, bias gradient
     """
     return gradient_descent(
@@ -62,5 +71,7 @@ def get_beta_sgd(
         lr=lr,
         tol=tol,
         max_grad=max_grad,
-        max_loops=max_loops
+        max_loops=max_loops,
+        reg_lambda=reg_lambda,
+        regularization=regularization
     )

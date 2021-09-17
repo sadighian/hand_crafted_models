@@ -112,7 +112,8 @@ def plot_classification_results(
     
     pred_list: Optional[np.ndarray] = None
     for label in classes:
-        mask_correct = np.argwhere((both_y[:, 0] == label) & (both_y[:, 1] == label)).flatten()
+        mask_correct = np.argwhere(
+            (both_y[:, 0] == label) & (both_y[:, 1] == label)).flatten()
         if pred_list is None:
             pred_list = mask_correct.copy()
         else:
@@ -134,6 +135,7 @@ def plot_classification_results(
                 )
     
     plt.legend()
+    plt.tight_layout()
     plt.show()
 
 
@@ -169,7 +171,7 @@ def gen_classification_data(
     :return: input data, labels
     """
     x, y = make_classification(
-        n_samples=100,
+        n_samples=1000,
         n_features=n_features,
         n_informative=n_features,
         n_redundant=0,

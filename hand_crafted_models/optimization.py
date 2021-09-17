@@ -2,6 +2,7 @@ from typing import Tuple, Optional, Callable
 
 import numpy as np
 
+from hand_crafted_models.regularization import get_regularization_fn
 from hand_crafted_models.utils import ensure_dims
 
 GradientStep = Tuple[float, np.ndarray, np.ndarray]
@@ -14,10 +15,12 @@ def gradient_descent(
         x: np.ndarray,
         y: np.ndarray,
         fn: LossFunction,
-        lr: float = 0.001,
+        lr: float = 0.003,
         tol: float = 1e-6,
-        max_grad: float = 10.0,
-        max_loops: int = 10000
+        max_grad: Optional[float] = 10.0,
+        max_loops: int = 10000,
+        reg_lambda: float = 1e-4,
+        regularization: Optional[str] = None
 ) -> WeightsAndBias:
     """
     Fit parameters using gradient descent.
@@ -29,6 +32,8 @@ def gradient_descent(
     :param tol: Tolerance for early-stopping
     :param max_grad: (Optional) Max size of gradient
     :param max_loops: Maximum number of steps to take
+    :param reg_lambda: Lambda scalar for regularization (if it's being used)
+    :param regularization: (Optional) 'l1' or 'l2' norm to prevent overfitting
     :return: weight gradients, bias gradient
     """
     # Make sure vectors are converted to matrices
@@ -36,6 +41,11 @@ def gradient_descent(
     y = ensure_dims(y)
     # Dataset dimensions
     batch_size, num_of_features = x.shape
+    use_regularization = isinstance(regularization, str)
+    if use_regularization:
+        reg_fn, d_reg_fn = get_regularization_fn(name=regularization)
+    else:
+        reg_fn, d_reg_fn = None, None
     # Feature params to learn
     weights = np.ones(shape=(1, num_of_features,), dtype=x.dtype)
     # Bias parameter to learn
@@ -48,6 +58,9 @@ def gradient_descent(
     for i in range(max_loops):
         # Calculate gradients
         loss, d_w, d_b = fn(x, y, weights, bias, one)
+        if use_regularization:
+            loss += reg_fn(weights, reg_lambda)
+            d_w -= d_reg_fn(weights, reg_lambda)
         # Adjust gradients by the learning rate
         d_w *= lr
         d_b *= lr
@@ -90,7 +103,8 @@ def closed_form_linear_algebra(
     try:
         betas = np.linalg.inv(x_1.T @ x_1) @ x_1.T @ y
     except np.linalg.LinAlgError:
-        raise ValueError('Ran out of memory!!! Reduce matrix dims (i.e., rows OR columns)')
+        raise ValueError(
+            'Ran out of memory!!! Reduce matrix dims (i.e., rows OR columns)')
     weights = np.expand_dims(betas[:-1], 0)
     bias = np.expand_dims(betas[-1:], 0)
     return weights, bias

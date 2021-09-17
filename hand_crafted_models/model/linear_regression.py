@@ -1,6 +1,8 @@
+from typing import Optional
+
 import numpy as np
 
-from hand_crafted_models.loss_functions import mean_squared_error
+from hand_crafted_models.loss_function import mean_squared_error
 from hand_crafted_models.optimization import (
     gradient_descent, closed_form_linear_algebra, GradientStep, WeightsAndBias,
 )
@@ -30,7 +32,7 @@ def _step(
     loss = mean_squared_error(y_hat=y_hat, y=y)
     # Perform back-propagation to parameters
     # The MSE derivative
-    d_y = 2 * (y - y_hat)  # [B, 1]
+    d_y = 2.0 * (y - y_hat)  # [B, 1]
     # The Weights derivative w.r.t. MSE loss fn
     d_w = d_y.T @ x  # [1, B] @ [B, N] -> [1, N]
     # The Bias derivative w.r.t. MSE loss fn
@@ -44,7 +46,9 @@ def get_beta_sgd(
         lr: float = 0.001,
         tol: float = 1e-6,
         max_grad: float = 10.0,
-        max_loops: int = 10000
+        max_loops: int = 10000,
+        reg_lambda: float = 1e-4,
+        regularization: Optional[str] = None
 ) -> WeightsAndBias:
     """
     Fit parameters using gradient descent.
@@ -55,6 +59,8 @@ def get_beta_sgd(
     :param tol: Tolerance for early-stopping
     :param max_grad: (Optional) Max size of gradient
     :param max_loops: Maximum number of steps to take
+    :param reg_lambda: Lambda scalar for regularization (if it's being used)
+    :param regularization: (Optional) 'l1' or 'l2' norm to prevent overfitting
     :return: weight gradients, bias gradient
     """
     return gradient_descent(
@@ -64,7 +70,9 @@ def get_beta_sgd(
         lr=lr,
         tol=tol,
         max_grad=max_grad,
-        max_loops=max_loops
+        max_loops=max_loops,
+        reg_lambda=reg_lambda,
+        regularization=regularization
     )
 
 
